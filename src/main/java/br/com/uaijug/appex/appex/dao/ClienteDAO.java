@@ -3,11 +3,11 @@ package br.com.uaijug.appex.appex.dao;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import br.com.uaijug.appex.appex.model.domain.Cliente;
 
-@Component
+@Repository
 public class ClienteDAO {
 	private List<Cliente> clientes = new ArrayList<>();
 
