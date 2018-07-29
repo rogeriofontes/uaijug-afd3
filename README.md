@@ -24,3 +24,13 @@ Para Excluir os dados do Cliente (Metodo PUT):
 ```
  curl -H "Accept: application/json" -H "Content-type: application/json" -X DELETE http://localhost:8080/clientes/0
 ```
+
+Criar Tabela no mysql
+
+```
+sudo mysql --password
+--
+mysql> create database uaijugafd3; -- Create the new database
+mysql> create user 'uaijug'@'localhost' identified by 'admin'; -- Creates the user
+mysql> grant all on db_example.* to 'uaijug'@'uaijugafd3'; -- Gives all the privileges to the new user on the newly created database
+```

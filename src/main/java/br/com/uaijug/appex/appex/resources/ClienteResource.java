@@ -20,7 +20,7 @@ import br.com.uaijug.appex.appex.model.domain.Cliente;
 import br.com.uaijug.appex.appex.model.service.ClienteService;
 
 @RestController
-@RequestMapping("/clientes")
+@RequestMapping(path = "/clientes")
 public class ClienteResource {
 
 	@Autowired
@@ -39,14 +39,14 @@ public class ClienteResource {
 		return new ResponseEntity<>("Dados Criados!", HttpStatus.CREATED);
 	}
 
-	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<?> change(@PathVariable int id, @RequestBody Cliente cliente) {
+	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<?> change(@PathVariable Long id, @RequestBody Cliente cliente) {
 		service.alterar(id, cliente);
 		return new ResponseEntity<>("Dados Alterados!", HttpStatus.OK);
 	}
 
-	@DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<?> remove(@PathVariable int id) {
+	@DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	public ResponseEntity<?> remove(@PathVariable Long id) {
 		service.delete(id);
 		return new ResponseEntity<>("Dados Deletados!", HttpStatus.OK);
 	}

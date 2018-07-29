@@ -1,38 +1,22 @@
 package br.com.uaijug.appex.appex.model.service;
 
 import java.util.List;
+import java.util.Optional;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import br.com.uaijug.appex.appex.dao.ClienteDAO;
-import br.com.uaijug.appex.appex.exception.CPFValidationException;
 import br.com.uaijug.appex.appex.model.domain.Cliente;
 
-@Service
-public class ClienteService {
+public interface ClienteService {
 
-	@Autowired
-	private ClienteDAO dao;
+	void salvar(Cliente cliente);
 
-	public void salvar(Cliente cliente) {
-		if (cliente.getCpf().length() < 11) {
-			throw new CPFValidationException("Erro na validação do cpf!");
-		} else {
-			dao.salvar(cliente);
-		}
-	}
+	List<Cliente> listar();
 
-	public List<Cliente> listar() {
-		return dao.listar();
-	}
+	void alterar(Long id, Cliente cliente);
 
-	public void alterar(int id, Cliente cliente) {
-		dao.alterar(id, cliente);
-	}
+	Optional<Cliente> buscarPorId(Long id);
 
-	public void delete(int id) {
-		dao.delete(id);
-	}
+	void delete(Long id);
+
+	Optional<Cliente> buscarPorNome(String nome);
 
 }
