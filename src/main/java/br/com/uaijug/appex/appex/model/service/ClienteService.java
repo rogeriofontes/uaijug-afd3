@@ -27,4 +27,12 @@ public class ClienteService {
 		return dao.listar();
 	}
 
+	public void alterar(int id, Cliente cliente) {
+		dao.alterar(id, cliente);
+	}
+
+	public void delete(int id) {
+		dao.delete(id);
+	}
+
 }
