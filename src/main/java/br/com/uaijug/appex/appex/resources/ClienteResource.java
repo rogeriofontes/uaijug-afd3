@@ -26,38 +26,26 @@ public class ClienteResource {
 	@Autowired
 	private ClienteService service;
 
-	// @RequestMapping(method = RequestMethod.GET, produces =
-	// MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	// @ResponseStatus(HttpStatus.OK)
 	@ResponseBody
 	public ResponseEntity<List<Cliente>> getAll() {
 		List<Cliente> clientes = service.listar();
 		return new ResponseEntity<>(clientes, HttpStatus.OK);
 	}
 
-	// @RequestMapping(method = RequestMethod.POST, consumes =
-	// MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	// @ResponseStatus(HttpStatus.CREATED)
 	public ResponseEntity<?> add(@RequestBody Cliente cliente) {
 		service.salvar(cliente);
 		return new ResponseEntity<>("Dados Criados!", HttpStatus.CREATED);
 	}
 
-	// @RequestMapping(value = "/{id}", method = RequestMethod.PUT, consumes =
-	// MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@PutMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	// @ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> change(@PathVariable int id, @RequestBody Cliente cliente) {
 		service.alterar(id, cliente);
 		return new ResponseEntity<>("Dados Alterados!", HttpStatus.OK);
 	}
 
-	// @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, consumes =
-	// MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@DeleteMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	//@ResponseStatus(HttpStatus.OK)
 	public ResponseEntity<?> remove(@PathVariable int id) {
 		service.delete(id);
 		return new ResponseEntity<>("Dados Deletados!", HttpStatus.OK);
