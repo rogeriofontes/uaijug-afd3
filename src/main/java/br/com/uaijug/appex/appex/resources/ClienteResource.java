@@ -2,6 +2,8 @@ package br.com.uaijug.appex.appex.resources;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -34,7 +36,7 @@ public class ClienteResource {
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	public ResponseEntity<?> add(@RequestBody Cliente cliente) {
+	public ResponseEntity<?> add(@Valid @RequestBody Cliente cliente) {
 		service.salvar(cliente);
 		return new ResponseEntity<>("Dados Criados!", HttpStatus.CREATED);
 	}
