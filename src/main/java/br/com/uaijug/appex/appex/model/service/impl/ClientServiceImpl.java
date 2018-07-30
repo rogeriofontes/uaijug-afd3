@@ -6,6 +6,9 @@ import java.util.Optional;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import br.com.uaijug.appex.appex.exception.CPFValidationException;
@@ -18,7 +21,7 @@ import br.com.uaijug.appex.appex.util.CPFUtil;
 
 @Service
 public class ClientServiceImpl implements ClientService {
-	
+
 	private static final Logger log = LogManager.getLogger(ClientServiceImpl.class);
 
 	@Autowired
@@ -54,8 +57,15 @@ public class ClientServiceImpl implements ClientService {
 	 * @see br.com.uaijug.appex.appex.model.service.ClienteSerivce#listar()
 	 */
 	@Override
+	@Cacheable("clientsInCache")
 	public List<Client> listAll() {
 		return clienteRepository.findAll();
+	}
+
+	@Override
+	@Cacheable("clientsInCache")
+	public Page<Client> findAllPageable(Pageable pageable) {
+		return clienteRepository.findAll(pageable);
 	}
 
 	/*

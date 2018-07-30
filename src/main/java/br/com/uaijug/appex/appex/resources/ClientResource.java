@@ -5,6 +5,7 @@ import java.util.List;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -36,18 +37,21 @@ public class ClientResource {
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@CacheEvict(value = "clientsInCache", allEntries = true)
 	public ResponseEntity<Client> add(@Valid @RequestBody Client client) {
 		Client result = service.save(client);
 		return new ResponseEntity<Client>(result, HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@CacheEvict(value = "clientsInCache", allEntries = true)
 	public ResponseEntity<Client> change(@PathVariable Long id, @RequestBody Client client) {
 		Client result = service.update(id, client);
 		return new ResponseEntity<Client>(result, HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@CacheEvict(value = "clientsInCache", allEntries = true)
 	public ResponseEntity<?> remove(@PathVariable Long id) {
 		service.remove(id);
 		return new ResponseEntity<>("Dados Deletados!", HttpStatus.OK);
