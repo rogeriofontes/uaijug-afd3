@@ -8,11 +8,8 @@ import org.springframework.context.annotation.Configuration;
 public class CacheConfig {
 
 	/*@Bean
-	public CacheManager cacheManager() {
-		CacheBuilder<Object, Object> builder = CacheBuilder.newBuilder().maximumSize(100).expireAfterAccess(5,
-				TimeUnit.MINUTES);
-		GuavaCacheManager manager = new GuavaCacheManager();
-		manager.setCacheBuilder(builder);
-		return manager;
+	public CaffeineCache clientsCache() {
+		return new CaffeineCache("clientsInCache",
+				Caffeine.newBuilder().expireAfterWrite(30, TimeUnit.MINUTES).maximumSize(100).build());
 	}*/
 }
