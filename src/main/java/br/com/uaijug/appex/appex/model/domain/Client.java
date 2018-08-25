@@ -1,6 +1,8 @@
 package br.com.uaijug.appex.appex.model.domain;
 
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
@@ -21,6 +23,10 @@ public class Client extends AudityEntity {
 	@NotNull
 	@Size(min = 11, message = "cpf should have atleast 11 characters")
 	private String cpf;
+
+	@ManyToOne
+	@JoinColumn(name = "client_type_id")
+	private ClientType clientType;
 
 	public String getName() {
 		return name;
@@ -52,6 +58,14 @@ public class Client extends AudityEntity {
 
 	public void setId(Long id) {
 		super.setId(id);
+	}
+
+	public ClientType getClientType() {
+		return clientType;
+	}
+
+	public void setClientType(ClientType clientType) {
+		this.clientType = clientType;
 	}
 
 	public void updade(Long id, Client client) {

@@ -24,43 +24,43 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
-import br.com.uaijug.appex.appex.model.domain.Client;
-import br.com.uaijug.appex.appex.model.service.ClientService;
+import br.com.uaijug.appex.appex.model.domain.Product;
+import br.com.uaijug.appex.appex.model.service.ProductService;
 
 @RestController
-@RequestMapping(path = "/clientes")
-public class ClientResource {
-	private static final Logger log = LogManager.getLogger(ClientResource.class);
+@RequestMapping(path = "/products")
+public class ProductResources {
+	private static final Logger log = LogManager.getLogger(ProductResources.class);
 
 	@Autowired
-	private ClientService service;
+	private ProductService service;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<List<Client>> getAll() {
-		List<Client> clients = service.listAll();
-		return new ResponseEntity<>(clients, HttpStatus.OK);
+	public ResponseEntity<List<Product>> getAll() {
+		List<Product> products = service.listAll();
+		return new ResponseEntity<>(products, HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "clientsInCache", allEntries = true)
+	@CacheEvict(value = "productsInCache", allEntries = true)
 	@Timed
-	public ResponseEntity<Client> add(@Valid @RequestBody Client client) {
-		Client result = service.save(client);
-		return new ResponseEntity<Client>(result, HttpStatus.CREATED);
+	public ResponseEntity<Product> add(@Valid @RequestBody Product product) {
+		Product result = service.save(product);
+		return new ResponseEntity<Product>(result, HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "clientsInCache", allEntries = true)
+	@CacheEvict(value = "productsInCache", allEntries = true)
 	@Timed
-	public ResponseEntity<Client> change(@PathVariable Long id, @RequestBody Client client) {
-		Client result = service.update(id, client);
-		return new ResponseEntity<Client>(result, HttpStatus.OK);
+	public ResponseEntity<Product> change(@PathVariable Long id, @RequestBody Product product) {
+		Product result = service.update(id, product);
+		return new ResponseEntity<Product>(result, HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "clientsInCache", allEntries = true)
+	@CacheEvict(value = "productsInCache", allEntries = true)
 	@Timed
 	public ResponseEntity<?> remove(@PathVariable Long id) {
 		service.remove(id);
@@ -70,10 +70,10 @@ public class ClientResource {
 	@GetMapping(path = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<Client> getUserByUsername(@PathVariable("name") String name) {
-		Optional<Client> client = service.findByName(name);
+	public ResponseEntity<Product> getProductByName(@PathVariable("name") String name) {
+		Optional<Product> product = service.findByName(name);
 
-		log.info("User: " + client.get().toString());
-		return new ResponseEntity<Client>(client.get(), HttpStatus.OK);
+		log.info("Product: " + product.get().toString());
+		return new ResponseEntity<Product>(product.get(), HttpStatus.OK);
 	}
 }
