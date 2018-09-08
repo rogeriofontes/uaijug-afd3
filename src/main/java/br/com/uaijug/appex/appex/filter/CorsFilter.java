@@ -1,4 +1,4 @@
-package br.com.uaijug.appex.appex.interceptions;
+package br.com.uaijug.appex.appex.filter;
 
 import java.io.IOException;
 

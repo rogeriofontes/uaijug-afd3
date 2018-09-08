@@ -39,7 +39,7 @@ public class ClientServiceImpl implements ClientService {
 		if (client != null) {
 			Optional<Client> result = findByName(client.getName());
 			if (!result.isPresent()) {
-				if (!CPFUtil.valida(client.getCpf())) {
+				if (!CPFUtil.valida(client.getDocumentId())) {
 					throw new CPFValidationException("Erro na validação do cpf!");
 				} else {
 					return clienteRepository.save(client);
@@ -80,7 +80,7 @@ public class ClientServiceImpl implements ClientService {
 		if (id != null && client != null) {
 			Optional<Client> result = findById(id);
 			if (result.isPresent()) {
-				if (!CPFUtil.valida(client.getCpf())) {
+				if (!CPFUtil.valida(client.getDocumentId())) {
 					throw new CPFValidationException("Erro na validação do cpf!");
 				} else {
 					result.get().updade(id, client);

@@ -5,29 +5,31 @@ import java.time.LocalDateTime;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EntityListeners;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
+import br.com.uaijug.appex.appex.constants.AppConstants;
 import br.com.uaijug.appex.appex.util.DateUtil;
 
 @MappedSuperclass
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
+@EntityListeners(AuditingEntityListener.class)
 public abstract class AudityEntity implements Serializable {
 
 	private static final long serialVersionUID = -8812000052333532897L;
@@ -37,28 +39,26 @@ public abstract class AudityEntity implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@CreatedDate
 	@NotNull
 	@Column(name = "created_date", nullable = false)
-	@Temporal(TemporalType.TIMESTAMP)
 	@JsonIgnore
-	private Date createdDate = DateUtil.localDateTimeToDate(LocalDateTime.now());
+	@CreatedDate
+	private LocalDateTime createdDate = DateUtil.dataToLocalDateTime(new Date());
 
-	@CreatedBy
 	@NotNull
 	@Column(name = "create_by")
 	@JsonIgnore
-	private String createBy = "SystemUser";
+	@CreatedBy
+	private String createBy = AppConstants.CURRENT_USER;
 
-	@LastModifiedDate
 	@Column(name = "last_modified_date")
 	@JsonIgnore
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date lastModifiedDate;
+	@LastModifiedDate
+	private LocalDateTime lastModifiedDate;
 
-	@LastModifiedBy
 	@Column(name = "last_modified_by")
 	@JsonIgnore
+	@LastModifiedBy
 	private String lastModifiedBy;
 
 	public Long getId() {
@@ -69,11 +69,11 @@ public abstract class AudityEntity implements Serializable {
 		this.id = id;
 	}
 
-	public Date getCreatedDate() {
-		return createdDate;
+	public LocalDateTime getCreatedDate() {
+		return createdDate; 
 	}
 
-	public void setCreatedDate(Date createdDate) {
+	public void setCreatedDate(LocalDateTime createdDate) {
 		this.createdDate = createdDate;
 	}
 
@@ -85,11 +85,11 @@ public abstract class AudityEntity implements Serializable {
 		this.createBy = createBy;
 	}
 
-	public Date getLastModifiedDate() {
+	public LocalDateTime getLastModifiedDate() {
 		return lastModifiedDate;
 	}
 
-	public void setLastModifiedDate(Date lastModifiedDate) {
+	public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
 		this.lastModifiedDate = lastModifiedDate;
 	}
 

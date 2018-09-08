@@ -41,13 +41,13 @@ public class ClientResourcesTest {
 		clientType.setName("Nte");
 		mockClient.setClientType(clientType);
 		clientType.setName("Joao");
-		mockClient.setCpf("0989");
+		mockClient.setDocumentId(null);
 		mockClient.setEmail("root@localhost");
 		
 				//Arrays.asList("Learn Maven", "Import Project", "First Example", "Second Example"));
 
 		String exampleCourseJson = "{\"name\":\"Spring\",\"description\":\"10 Steps\",\"steps\":[\"Learn Maven\",\"Import Project\",\"First Example\",\"Second Example\"]}";
-
+		System.out.println("-->" + exampleCourseJson);
 	}
 
 	@Test

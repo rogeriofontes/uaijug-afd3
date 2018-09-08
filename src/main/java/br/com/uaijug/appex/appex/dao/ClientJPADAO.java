@@ -31,12 +31,10 @@ public class ClientJPADAO {
 		Client cliente = new Client();
 		cliente.setName("Rogerio Fontes");
 		cliente.setEmail("root@localhost.com");
-		cliente.setCpf("090889999");
 
 		Client cliente2 = new Client();
 		cliente2.setName("Rogerio Fontes");
 		cliente2.setEmail("root@localhost.com");
-		cliente2.setCpf("090889999");
 
 		ClientJPADAO dao = new ClientJPADAO();
 		dao.salvar(cliente);
@@ -45,7 +43,6 @@ public class ClientJPADAO {
 		Client clienteALt = new Client();
 		clienteALt.setName("Rogerio Fontes- Alterado");
 		clienteALt.setEmail("root@localhost.com");
-		clienteALt.setCpf("09088999933");
 		
 		dao.alterar(1, clienteALt);
 		
