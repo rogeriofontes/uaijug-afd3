@@ -1,58 +1,38 @@
 package br.com.uaijug.appex.appex.model.domain;
 
-import java.util.Set;
-
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @Entity
 @Table(name = "user")
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, of = { "email", "password" })
+@Data
 public class User extends AudityEntity {
 
 	private static final long serialVersionUID = -1162093762286562478L;
 
-	@Column(name = "username")
-	private String username;
+	@Getter
+	@Setter
+	private String email;
 
-	@Column(name = "password")
+	@Getter
+	@Setter
 	private String password;
 
+	/*@Getter
+	@Setter
 	@OneToMany(mappedBy = "user")
-	private Set<UserRole> roles;
+	private Set<UserRole> roles;*/
 
-	public Long getId() {
-		return super.getId();
-	}
-
-	public void setId(Long id) {
-		super.setId(id);
-	}
-
-	public String getUsername() {
-		return username;
-	}
-
-	public void setUsername(String username) {
-		this.username = username;
-	}
-
-	public String getPassword() {
-		return password;
-	}
-
-	public void setPassword(String password) {
-		this.password = password;
-	}
-
-	public Set<UserRole> getRoles() {
-		return roles;
-	}
-
-	public void setRoles(Set<UserRole> roles) {
-		this.roles = roles;
-	}
-
-	
 }

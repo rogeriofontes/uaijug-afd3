@@ -1,4 +1,4 @@
-package br.com.uaijug.appex.appex;
+/*package br.com.uaijug.appex.appex;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -14,3 +14,4 @@ public class AppexApplicationTests {
 	}
 
 }
+*/

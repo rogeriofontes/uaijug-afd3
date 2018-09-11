@@ -10,6 +10,6 @@ import br.com.uaijug.appex.appex.model.domain.User;
 @Qualifier(value = "userRepository")
 public interface UserRepository extends JpaRepository<User, Long> {
 	
-    User findByUsername(String username);
-    User findByUsernameAndPassword(String username, String password);
+    User findByEmail(String email);
+    User findByEmailAndPassword(String email, String password);
 }

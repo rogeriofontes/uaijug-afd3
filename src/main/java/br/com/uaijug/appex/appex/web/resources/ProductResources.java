@@ -1,7 +1,6 @@
-package br.com.uaijug.appex.appex.resources;
+package br.com.uaijug.appex.appex.web.resources;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -24,56 +23,56 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
-import br.com.uaijug.appex.appex.model.domain.Order;
-import br.com.uaijug.appex.appex.model.service.OrderService;
+import br.com.uaijug.appex.appex.web.dto.ProductDTO;
+import br.com.uaijug.appex.appex.web.support.ProductSupport;
 
 @RestController
-@RequestMapping(path = "/orders")
-public class OrderResources {
-	private static final Logger log = LogManager.getLogger(OrderResources.class);
+@RequestMapping(path = "/products")
+public class ProductResources {
+	private static final Logger log = LogManager.getLogger(ProductResources.class);
 
 	@Autowired
-	private OrderService service;
+	private ProductSupport productSupport;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<List<Order>> getAll() {
-		List<Order> orders = service.listAll();
-		return new ResponseEntity<>(orders, HttpStatus.OK);
+	public ResponseEntity<List<ProductDTO>> getAll() {
+		List<ProductDTO> productDTOs = productSupport.list();
+		return new ResponseEntity<>(productDTOs, HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "ordersInCache", allEntries = true)
+	@CacheEvict(value = "productsInCache", allEntries = true)
 	@Timed
-	public ResponseEntity<Order> add(@Valid @RequestBody Order order) {
-		Order result = service.save(order);
-		return new ResponseEntity<Order>(result, HttpStatus.CREATED);
+	public ResponseEntity<ProductDTO> add(@Valid @RequestBody ProductDTO productDTO) {
+		ProductDTO result = productSupport.convertToCreate(productDTO);
+		return new ResponseEntity<ProductDTO>(result, HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "ordersInCache", allEntries = true)
+	@CacheEvict(value = "productsInCache", allEntries = true)
 	@Timed
-	public ResponseEntity<Order> change(@PathVariable Long id, @RequestBody Order order) {
-		Order result = service.update(id, order);
-		return new ResponseEntity<Order>(result, HttpStatus.OK);
+	public ResponseEntity<ProductDTO> change(@PathVariable Long id, @RequestBody ProductDTO productDTO) {
+		ProductDTO result = productSupport.convertToChange(id, productDTO);
+		return new ResponseEntity<ProductDTO>(result, HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "ordersInCache", allEntries = true)
+	@CacheEvict(value = "productsInCache", allEntries = true)
 	@Timed
 	public ResponseEntity<?> remove(@PathVariable Long id) {
-		service.remove(id);
+		productSupport.remove(id);
 		return new ResponseEntity<>("Dados Deletados!", HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<Order> getOrderByName(@PathVariable("name") String name) {
-		Optional<Order> order = service.findByName(name);
+	public ResponseEntity<ProductDTO> getProductDTOByName(@PathVariable("name") String name) {
+		ProductDTO productDTO = productSupport.convertToFindByName(name);
 
-		log.info("User: " + order.get().toString());
-		return new ResponseEntity<Order>(order.get(), HttpStatus.OK);
+		log.info("ProductDTO: " + productDTO.toString());
+		return new ResponseEntity<ProductDTO>(productDTO, HttpStatus.OK);
 	}
 }

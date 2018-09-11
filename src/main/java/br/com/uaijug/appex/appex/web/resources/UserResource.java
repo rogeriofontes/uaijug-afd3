@@ -1,4 +1,4 @@
-package br.com.uaijug.appex.appex.resources;
+package br.com.uaijug.appex.appex.web.resources;
 
 import java.util.List;
 
@@ -16,8 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
-import br.com.uaijug.appex.appex.model.domain.User;
-import br.com.uaijug.appex.appex.model.repository.UserRepository;
+import br.com.uaijug.appex.appex.web.dto.UserDTO;
+import br.com.uaijug.appex.appex.web.support.UserSupport;
 
 
 @RestController
@@ -27,13 +27,13 @@ public class UserResource {
 	private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 	@Autowired
-	private UserRepository userRepository;
+	private UserSupport userSupport;
 
 	@RequestMapping(value = "/{username}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<User> getUserByUsername(@PathVariable("username") String username) {
-		User user = userRepository.findByUsername(username);
+	public ResponseEntity<UserDTO> getUserByUsername(@PathVariable("username") String username) {
+		UserDTO user = userSupport.findUserByUsername(username);
 
 		logger.info("User: " + user.toString());
 		return new ResponseEntity<>(user, HttpStatus.OK);
@@ -42,8 +42,8 @@ public class UserResource {
 	@RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<List<User>> list() {
-		List<User> plates = userRepository.findAll();
-		return new ResponseEntity<>(plates, HttpStatus.OK);
+	public ResponseEntity<List<UserDTO>> list() {
+		List<UserDTO> users = userSupport.list();
+		return new ResponseEntity<>(users, HttpStatus.OK);
 	}
 }

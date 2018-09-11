@@ -35,12 +35,11 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService, U
 	@Override
 	public UserDetails loadUserByUsername(final String email) {
 		List<GrantedAuthority> authorities = null;
-		User user = userRepository.findByUsername(email);
+		User user = userRepository.findByEmail(email);
 		if (user != null) {
 			Set<UserRole> roles = userRoleRepository.findRoleNameByUserId(user.getId());
 			authorities = buildUserAuthority(roles);
 		}
-	
 		
 		return buildUserForAuthentication(user, authorities);
 
@@ -49,11 +48,11 @@ public class CustomUserDetailsServiceImpl implements CustomUserDetailsService, U
 	@Transactional
 	@Override
 	public User loadCurrentUser() {
-		return userRepository.findByUsername(SecurityUtils.getCurrentLogin());
+		return userRepository.findByEmail(SecurityUtils.getCurrentLogin());
 	}
 
 	private UserDetails buildUserForAuthentication(User user, List<GrantedAuthority> authorities) {
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true,
+		return new org.springframework.security.core.userdetails.User(user.getEmail(), user.getPassword(), true,
 				true, true, true, authorities);
 	}
 

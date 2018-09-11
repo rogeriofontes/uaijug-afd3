@@ -25,11 +25,23 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 import br.com.uaijug.appex.appex.constants.AppConstants;
 import br.com.uaijug.appex.appex.util.DateUtil;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
 
 @MappedSuperclass
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonInclude(Include.NON_NULL)
 @EntityListeners(AuditingEntityListener.class)
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode
+@ToString
+@Data
 public abstract class AudityEntity implements Serializable {
 
 	private static final long serialVersionUID = -8812000052333532897L;
@@ -37,68 +49,38 @@ public abstract class AudityEntity implements Serializable {
 	@Id
 	@Column(name = "id")
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Getter
+	@Setter
 	private Long id;
 
 	@NotNull
 	@Column(name = "created_date", nullable = false)
 	@JsonIgnore
 	@CreatedDate
+	@Getter
+	@Setter
 	private LocalDateTime createdDate = DateUtil.dataToLocalDateTime(new Date());
 
 	@NotNull
 	@Column(name = "create_by")
 	@JsonIgnore
 	@CreatedBy
+	@Getter
+	@Setter
 	private String createBy = AppConstants.CURRENT_USER;
 
 	@Column(name = "last_modified_date")
 	@JsonIgnore
 	@LastModifiedDate
+	@Getter
+	@Setter
 	private LocalDateTime lastModifiedDate;
 
 	@Column(name = "last_modified_by")
 	@JsonIgnore
 	@LastModifiedBy
+	@Getter
+	@Setter
 	private String lastModifiedBy;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public LocalDateTime getCreatedDate() {
-		return createdDate; 
-	}
-
-	public void setCreatedDate(LocalDateTime createdDate) {
-		this.createdDate = createdDate;
-	}
-
-	public String getCreateBy() {
-		return createBy;
-	}
-
-	public void setCreateBy(String createBy) {
-		this.createBy = createBy;
-	}
-
-	public LocalDateTime getLastModifiedDate() {
-		return lastModifiedDate;
-	}
-
-	public void setLastModifiedDate(LocalDateTime lastModifiedDate) {
-		this.lastModifiedDate = lastModifiedDate;
-	}
-
-	public String getLastModifiedBy() {
-		return lastModifiedBy;
-	}
-
-	public void setLastModifiedBy(String lastModifiedBy) {
-		this.lastModifiedBy = lastModifiedBy;
-	}
 
 }

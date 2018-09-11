@@ -1,7 +1,6 @@
-package br.com.uaijug.appex.appex.resources;
+package br.com.uaijug.appex.appex.web.resources;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -24,56 +23,55 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
-import br.com.uaijug.appex.appex.model.domain.ClientType;
-import br.com.uaijug.appex.appex.model.service.ClientTypeService;
+import br.com.uaijug.appex.appex.model.domain.Order;
+import br.com.uaijug.appex.appex.web.support.OrderSupport;
 
 @RestController
-@RequestMapping(path = "/client-types")
-public class ClientTypeResources {
-	private static final Logger log = LogManager.getLogger(ClientTypeResources.class);
+@RequestMapping(path = "/orders")
+public class OrderResources {
+	private static final Logger log = LogManager.getLogger(OrderResources.class);
 
 	@Autowired
-	private ClientTypeService service;
+	private OrderSupport orderSupport;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<List<ClientType>> getAll() {
-		List<ClientType> clientTypes = service.listAll();
-		return new ResponseEntity<>(clientTypes, HttpStatus.OK);
+	public ResponseEntity<List<Order>> getAll() {
+		List<Order> orders = orderSupport.list();
+		return new ResponseEntity<>(orders, HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "clientTypesInCache", allEntries = true)
+	@CacheEvict(value = "ordersInCache", allEntries = true)
 	@Timed
-	public ResponseEntity<ClientType> add(@Valid @RequestBody ClientType clientType) {
-		ClientType result = service.save(clientType);
-		return new ResponseEntity<ClientType>(result, HttpStatus.CREATED);
+	public ResponseEntity<Order> add(@Valid @RequestBody Order order) {
+		Order result = orderSupport.convertToCreate(order);
+		return new ResponseEntity<Order>(result, HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "clientTypesInCache", allEntries = true)
+	@CacheEvict(value = "ordersInCache", allEntries = true)
 	@Timed
-	public ResponseEntity<ClientType> change(@PathVariable Long id, @RequestBody ClientType clientType) {
-		ClientType result = service.update(id, clientType);
-		return new ResponseEntity<ClientType>(result, HttpStatus.OK);
+	public ResponseEntity<Order> change(@PathVariable Long id, @RequestBody Order order) {
+		Order result = orderSupport.convertToChange(id, order);
+		return new ResponseEntity<Order>(result, HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "clientTypesInCache", allEntries = true)
+	@CacheEvict(value = "ordersInCache", allEntries = true)
 	@Timed
 	public ResponseEntity<?> remove(@PathVariable Long id) {
-		service.remove(id);
+		orderSupport.remove(id);
 		return new ResponseEntity<>("Dados Deletados!", HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<ClientType> getUserByUsername(@PathVariable("name") String name) {
-		Optional<ClientType> clientType = service.findByName(name);
-
-		log.info("User: " + clientType.get().toString());
-		return new ResponseEntity<ClientType>(clientType.get(), HttpStatus.OK);
+	public ResponseEntity<Order> getOrderByName(@PathVariable("name") String name) {
+		Order order = orderSupport.convertToFindByName(name);
+		log.info("User: " + order.toString());
+		return new ResponseEntity<Order>(order, HttpStatus.OK);
 	}
 }

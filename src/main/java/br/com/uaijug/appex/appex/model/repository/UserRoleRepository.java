@@ -14,7 +14,7 @@ import br.com.uaijug.appex.appex.model.domain.UserRole;
 @Qualifier(value = "userRoleRepository")
 public interface UserRoleRepository extends JpaRepository<UserRole, Long> {
 	
-	@Query("SELECT ur FROM UserRole ur WHERE ur.user.id = :userId")
+	@Query("SELECT ur FROM br.com.uaijug.appex.appex.model.domain.UserRole ur WHERE ur.user.id = :userId")
 	Set<UserRole> findRoleNameByUserId(@Param("userId") Long userId);
 	
 	UserRole findByRoleName(@Param("roleName") String roleName);

@@ -1,7 +1,6 @@
-package br.com.uaijug.appex.appex.resources;
+package br.com.uaijug.appex.appex.web.resources;
 
 import java.util.List;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -24,56 +23,55 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.codahale.metrics.annotation.Timed;
 
-import br.com.uaijug.appex.appex.model.domain.Product;
-import br.com.uaijug.appex.appex.model.service.ProductService;
+import br.com.uaijug.appex.appex.web.dto.ClientTypeDTO;
+import br.com.uaijug.appex.appex.web.support.ClientTypeSupport;
 
 @RestController
-@RequestMapping(path = "/products")
-public class ProductResources {
-	private static final Logger log = LogManager.getLogger(ProductResources.class);
+@RequestMapping(path = "/client-types")
+public class ClientTypeResources {
+	private static final Logger log = LogManager.getLogger(ClientTypeResources.class);
 
 	@Autowired
-	private ProductService service;
+	private ClientTypeSupport clientTypeSupport;
 
 	@GetMapping(produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<List<Product>> getAll() {
-		List<Product> products = service.listAll();
-		return new ResponseEntity<>(products, HttpStatus.OK);
+	public ResponseEntity<List<ClientTypeDTO>> getAll() {
+		List<ClientTypeDTO> clientTypes = clientTypeSupport.list();
+		log.info("Total Retornado: " + clientTypes.size());
+		return new ResponseEntity<>(clientTypes, HttpStatus.OK);
 	}
 
 	@PostMapping(consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "productsInCache", allEntries = true)
+	@CacheEvict(value = "clientTypesInCache", allEntries = true)
 	@Timed
-	public ResponseEntity<Product> add(@Valid @RequestBody Product product) {
-		Product result = service.save(product);
-		return new ResponseEntity<Product>(result, HttpStatus.CREATED);
+	public ResponseEntity<ClientTypeDTO> add(@Valid @RequestBody ClientTypeDTO clientTypeDTO) {
+		ClientTypeDTO result = clientTypeSupport.convertToCreate(clientTypeDTO);
+		return new ResponseEntity<ClientTypeDTO>(result, HttpStatus.CREATED);
 	}
 
 	@PutMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "productsInCache", allEntries = true)
+	@CacheEvict(value = "clientTypesInCache", allEntries = true)
 	@Timed
-	public ResponseEntity<Product> change(@PathVariable Long id, @RequestBody Product product) {
-		Product result = service.update(id, product);
-		return new ResponseEntity<Product>(result, HttpStatus.OK);
+	public ResponseEntity<ClientTypeDTO> change(@PathVariable Long id, @RequestBody ClientTypeDTO clientTypeDTO) {
+		ClientTypeDTO result = clientTypeSupport.convertToChange(id, clientTypeDTO);
+		return new ResponseEntity<ClientTypeDTO>(result, HttpStatus.OK);
 	}
 
 	@DeleteMapping(path = "/{id}", consumes = MediaType.APPLICATION_JSON_UTF8_VALUE)
-	@CacheEvict(value = "productsInCache", allEntries = true)
+	@CacheEvict(value = "clientTypesInCache", allEntries = true)
 	@Timed
 	public ResponseEntity<?> remove(@PathVariable Long id) {
-		service.remove(id);
+		clientTypeSupport.remove(id);
 		return new ResponseEntity<>("Dados Deletados!", HttpStatus.OK);
 	}
 
 	@GetMapping(path = "/{name}", produces = MediaType.APPLICATION_JSON_VALUE)
 	@ResponseBody
 	@Timed
-	public ResponseEntity<Product> getProductByName(@PathVariable("name") String name) {
-		Optional<Product> product = service.findByName(name);
-
-		log.info("Product: " + product.get().toString());
-		return new ResponseEntity<Product>(product.get(), HttpStatus.OK);
+	public ResponseEntity<ClientTypeDTO> findByName(@PathVariable("name") String name) {
+		ClientTypeDTO clientTypeDTO = clientTypeSupport.convertToFindByName(name);
+		return new ResponseEntity<ClientTypeDTO>(clientTypeDTO, HttpStatus.OK);
 	}
 }

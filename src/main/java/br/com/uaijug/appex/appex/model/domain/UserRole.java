@@ -6,48 +6,33 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
 @Entity
 @Table(name = "user_role")
+@NoArgsConstructor
+@AllArgsConstructor
+@EqualsAndHashCode(callSuper = true)
+@ToString(callSuper = true, of = { "roleName", "user" })
+@Data
 public class UserRole extends AudityEntity {
 
 	private static final long serialVersionUID = -2719226491222823385L;
 
+	@Getter
+	@Setter
 	@Column(name = "role_name")
 	private String roleName;
 
+	@Getter
+	@Setter
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private User user;
-
-	public UserRole() {
-	}
-
-	public UserRole(String roleName, User user) {
-		this.roleName = roleName;
-		this.user = user;
-	}
-
-	public Long getId() {
-		return super.getId();
-	}
-
-	public void setId(Long id) {
-		super.setId(id);
-	}
-
-	public String getRoleName() {
-		return roleName;
-	}
-
-	public void setRoleName(String roleName) {
-		this.roleName = roleName;
-	}
-
-	public User getUser() {
-		return user;
-	}
-
-	public void setUser(User user) {
-		this.user = user;
-	}
 }
